@@ -247,29 +247,8 @@ def getGTTSFileName(text):
         filename = 'gtts-' + str(uuid.uuid4())
         GTTS_CACHE[text] = filename
     return filename
-    
-@app.route('/gtts', methods=['GET'])
-def get_gtts():
-    try:
-        Path("data").mkdir(parents=True, exist_ok=True)
-        if request.method == 'GET':
-            text = request.args.get('text', None)
-        elif request.method == 'POST':
-            text = request.form.get('text', None)
-        filename = getGTTSFileName(text)
-        outfilemp3 = "data/" + filename + ".mp3"
-        outfileogg = "data/" + filename + ".ogg"
-        if not os.path.isfile(outfileogg):
-            tts = gTTS(text=text)
-            tts.save(outfilemp3)
-            sound = AudioSegment.from_mp3(outfilemp3)
-            sound.export(outfileogg, format='ogg')
-        return str(request.host_url) + outfileogg
-    except Exception as e:
-        return "Contact TessaCoil to fix server\nError:\n" + str(e)
         
-        
-@app.route('/gtts2', methods=['GET', 'POST'])
+@app.route('/gtts', methods=['GET', 'POST'])
 def get_gtts2():
     text = ""
     try:
@@ -289,23 +268,8 @@ def get_gtts2():
         return "Success" + "\n" + str(request.host_url) + outfileogg + "\n" + text
     except Exception as e:
         return "Error" + "\n" + "\n" + text
-
-@app.route('/15ai', methods=['GET', 'POST'])
-def get_15ai():
-    try:
-        if request.method == 'GET':
-            char = request.args.get("character", None)
-            text = request.args.get('text', None)
-        elif request.method == 'POST':
-            char = request.form.get("character", None)
-            text = request.form.get('text', None)
-        filename = callPony(request, text, char)
-        return filename
-    except Exception as e:
-        return "Contact TessaCoil to fix server\nError:\n" + str(e)
-     
         
-@app.route('/15ai2', methods=['GET', 'POST'])
+@app.route('/15ai', methods=['GET', 'POST'])
 def get_15ai2():
     text = ""
     try:
