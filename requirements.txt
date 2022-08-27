@@ -1,0 +1,6 @@
+flask
+grequests
+gtts
+apscheduler
+num2words
+arrow
