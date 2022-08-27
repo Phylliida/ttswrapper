@@ -14,4 +14,7 @@ For example:
 
 ```
 http://localhost:5000/15ai?character=GLaDOS&text=wow%20hi%20there
+http://localhost:5000/gtts?character=GLaDOS&text=wow%20hi%20there
 ```
+
+It outputs as `Success\nfilePath.wav\ninput text` or `Error\n\ninput text`
