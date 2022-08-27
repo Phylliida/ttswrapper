@@ -4,3 +4,4 @@ gtts
 apscheduler
 num2words
 arrow
+pydub
