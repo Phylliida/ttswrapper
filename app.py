@@ -221,7 +221,7 @@ def getGTTSFileName(text):
     return filename
         
 @app.route('/gtts', methods=['GET', 'POST'])
-def get_gtts2():
+def get_gtts():
     text = ""
     try:
         Path("data").mkdir(parents=True, exist_ok=True)
@@ -242,7 +242,7 @@ def get_gtts2():
         return "Error" + "\n" + "\n" + text
         
 @app.route('/15ai', methods=['GET', 'POST'])
-def get_15ai2():
+def get_15ai():
     text = ""
     try:
         if request.method == 'GET':
