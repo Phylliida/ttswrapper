@@ -1,3 +1,5 @@
+Forwards requsts to 15.ai or google (for gtts voice), since we can't modify headers ingame
+
 To install
 ```
 pip3 install -r requirements.txt
