@@ -16,6 +16,8 @@ from apscheduler.triggers.interval import IntervalTrigger
 import arrow
 import atexit
 from num2words import num2words
+import time
+from pydub import AudioSegment
 
 # converts numbers into spoken words
 def convertNumbers(text):
@@ -35,7 +37,6 @@ def convertNumbers(text):
             resWords.append(word)
     return re.sub(' +', ' ', " ".join(resWords).strip()).strip()
 
-from pydub import AudioSegment
 
 # from https://stackoverflow.com/questions/12485666/python-deleting-all-files-in-a-folder-older-than-x-days
 # deletes all data files more than 4 hours old
@@ -137,35 +138,6 @@ def sanitizeText(text):
     
 def getCutOffPoint(text):
     return max([text.rfind(cutoff) for cutoff in [' ', ',', '.', '!', '?', '-']])
-    
-import time
-global allChunks
-allChunks = []
-def callRateLimit(chunks, voice):
-    global allChunks
-    allChunks = []
-    for i, chunk in enumerate(chunks):
-        time.sleep(1)
-        wavFile = callPonySingle(chunk, voice)
-        allChunks.append(wavFile)
-        print(i, len(chunks))
-        
-def mergeRateLimitOutputs():
-    rs = (grequests.get(wavURL) for wavURL in wavURLS)
-    wavFileRequests = grequests.map(rs)
-    audioSegments = []
-    for wavFileRequest in wavFileRequests:
-        wavFileRequest.raise_for_status()
-        with io.BytesIO() as f:
-            for chunk in wavFileRequest.iter_content(chunk_size=8192):
-                f.write(chunk)
-            f.seek(0)
-            audioSegments.append(AudioSegment.from_file(f))
-    resSegment = audioSegments[0]
-    for audioSegment in audioSegments[1:]:
-        resSegment = resSegment + audioSegment
-    
-    resSegment.export("antimeme.ogg", format='ogg')
         
 def splitIntoChunks(text, chunkSize):
     if len(text) < chunkSize:
